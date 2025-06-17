@@ -1,24 +1,24 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from exercise.models import Exercise
 
-class Exercise(models.Model):
+
+class Workout(models.Model):
     class Meta:
-        verbose_name = "Exercise"
-        verbose_name_plural = "Exercises"
+        verbose_name = "Workout"
+        verbose_name_plural = "Workouts"
 
-    number_of_repetitions = models.IntegerField()
-    number_of_sets = models.IntegerField()
-    weight = models.IntegerField()
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, null=False, blank=False)
+    description = models.TextField()
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="exercises",
     )
+    exercises = models.ManyToManyField(Exercise)
 
     def __str__(self) -> str:
         return self.name
