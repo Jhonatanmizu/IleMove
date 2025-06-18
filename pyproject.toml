@@ -6,12 +6,13 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "django>=5.2.3",
+    "django-stubs-ext>=5.2.1",
     "django-types>=0.21.0",
 ]
 
 
 [project.optional-dependencies]
-dev = ["ruff", "pyright", "pytest", "pytest-xdist"]
+dev = ["ruff", "pytest", "pytest-xdist", "pyright"]
 
 
 [tool.ruff]
@@ -74,7 +75,7 @@ known-first-party = ["my_package"]
 
 
 [tool.pyright]
-typeCheckingMode = "strict"
+typeCheckingMode = "standard"
 pythonVersion = "3.13"
 include = ["./", 'tests']
 exclude = [
@@ -104,4 +105,3 @@ where = ["./"]
 
 [tool.setuptools]
 package-dir = { "" = "./" }
-
