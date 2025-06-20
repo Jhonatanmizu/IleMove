@@ -1,25 +1,83 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
-from django.views import View
+from django.db.models.manager import BaseManager
+from django.shortcuts import get_object_or_404
+from rest_framework import status
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import Exercise
+from .models import Exercise, ExerciseCategory
+from .serializers import ExerciseCategorySerializer, ExerciseSerializer
 
 
-class ExerciseView(View):
-    template_name = "exercise/pages/index.html"
-    queryset = Exercise.objects.all()
+class ExerciseViewSet(APIView):
+    serializer_class = ExerciseSerializer
 
-    def get(self, request: HttpRequest) -> HttpResponse:
-        exercise_id = request.GET.get("id")
-        exercise = self.queryset.filter(id=exercise_id)
-        context = {"exercise": exercise}
-        return render(request, self.template_name, context)
+    def get_queryset(self) -> BaseManager[Exercise]:
+        queryset = Exercise.objects.filter(is_active=True)
+        return queryset.select_related("exercise_category","user")
 
-    def post(self, request: HttpRequest) -> HttpResponse:
-        return render(request, self.template_name)
 
-    def put(self, request: HttpRequest) -> HttpResponse:
-        return render(request, self.template_name)
+    def get(self, request: Request, pk:int | None = None) -> Response:
+        if pk:
+            exercise = get_object_or_404(self.get_queryset(), pk=pk)
+            serializer = self.serializer_class(exercise)
+        else:
+            exercises = self.get_queryset()
+            serializer = self.serializer_class(exercises, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def delete(self, request: HttpRequest) -> HttpResponse:
-        return render(request, self.template_name)
+    def post(self, request: Request) -> Response:
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request: Request, pk: int) -> Response:
+        exercise = get_object_or_404(self.get_queryset(), pk=pk)
+        serializer = self.serializer_class(exercise, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request: Request, pk: int) -> Response:
+        exercise = get_object_or_404(self.get_queryset(), pk=pk)
+        exercise.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ExerciseCategoryViewSet(APIView):
+    serializer_class = ExerciseCategorySerializer
+
+    def get_queryset(self) -> BaseManager[ExerciseCategory]:
+        queryset = ExerciseCategory.objects.filter(is_active=True)
+        return queryset.select_related("user")
+
+    def get(self, request: Request, pk:int | None = None) -> Response:
+        if pk:
+            exercise_category = get_object_or_404(self.get_queryset(), pk=pk)
+            serializer = self.serializer_class(exercise_category)
+        else:
+            exercise_categories = self.get_queryset()
+            serializer = self.serializer_class(exercise_categories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request: Request) -> Response:
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request: Request, pk: int) -> Response:
+        exercise_category = get_object_or_404(self.get_queryset(), pk=pk)
+        serializer = self.serializer_class(exercise_category, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request: Request, pk: int) -> Response:
+        exercise_category = get_object_or_404(self.get_queryset(), pk=pk)
+        exercise_category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
