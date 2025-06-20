@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -7,6 +9,7 @@ class ExerciseCategory(models.Model):
         verbose_name = "Exercise Category"
         verbose_name_plural = "Exercise Categories"
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -26,6 +29,7 @@ class Exercise(models.Model):
         verbose_name = "Exercise"
         verbose_name_plural = "Exercises"
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     number_of_repetitions = models.IntegerField()
     number_of_sets = models.IntegerField()
     weight = models.IntegerField()
