@@ -1,7 +1,8 @@
 import uuid
 
-from django.contrib.auth.models import User
 from django.db import models
+
+from accounts.models import CustomUser as User
 
 
 class ExerciseCategory(models.Model):

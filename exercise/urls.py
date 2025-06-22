@@ -7,7 +7,7 @@ app_name = "exercise"
 urlpatterns = [
     path("api/v1/exercise", ExerciseViewSet.as_view(), name="exercise"),
     path(
-        "api/v1/exercise/<int:pk>/",
+        "api/v1/exercise/<uuid:pk>/",
         ExerciseViewSet.as_view(),
         name="exercise-detail",
     ),
@@ -17,7 +17,7 @@ urlpatterns = [
         name="exercise-category",
     ),
     path(
-        "api/v1/exercise_category/<int:pk>/",
+        "api/v1/exercise_category/<uuid:pk>/",
         ExerciseCategoryViewSet.as_view(),
         name="exercise-category-detail",
     ),
