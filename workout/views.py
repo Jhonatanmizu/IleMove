@@ -1,15 +1,21 @@
+from django.db.models.manager import BaseManager
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.views import View
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .models import Workout
+from .serializers import WorkoutSerializer
 
 
-class WorkoutView(View):
-    template_name = "workout/workout.html"
-    def __init__(self) -> None:
-        self.name = "WorkoutView"
+class WorkoutView(APIView):
+    def get_queryset(self) -> BaseManager[Workout]:
+        return Workout.objects.select_related("user").filter(is_active=True)
 
-    def get(self) -> HttpResponse:
-        return render(self.request, self.template_name)
+    def get(self, _: Request) -> Response:
+        queryset = self.get_queryset()
+        serializer = WorkoutSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def post(self) -> HttpResponse:
         return HttpResponse("POST request received")
