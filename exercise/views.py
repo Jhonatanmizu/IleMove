@@ -55,7 +55,7 @@ class ExerciseCategoryViewSet(APIView):
         queryset = ExerciseCategory.objects.filter(is_active=True)
         return queryset.select_related("user")
 
-    def get(self, request: Request, pk: uuid.UUID | None = None) -> Response:
+    def get(self, _: Request, pk: uuid.UUID | None = None) -> Response:
         if pk:
             exercise_category = get_object_or_404(self.get_queryset(), pk=pk)
             serializer = self.serializer_class(exercise_category)
@@ -79,7 +79,7 @@ class ExerciseCategoryViewSet(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request: Request, pk: uuid.UUID) -> Response:
+    def delete(self, _: Request, pk: uuid.UUID) -> Response:
         exercise_category = get_object_or_404(self.get_queryset(), pk=pk)
         exercise_category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
