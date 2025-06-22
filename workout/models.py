@@ -1,6 +1,8 @@
-from django.contrib.auth.models import User
+import uuid
+
 from django.db import models
 
+from accounts.models import CustomUser as User
 from exercise.models import Exercise
 
 
@@ -9,6 +11,7 @@ class Workout(models.Model):
         verbose_name = "Workout"
         verbose_name_plural = "Workouts"
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200, null=False, blank=False)
     description = models.TextField()
     is_active = models.BooleanField(default=True)
@@ -29,6 +32,7 @@ class WorkoutSession(models.Model):
         verbose_name = "Workout Session"
         verbose_name_plural = "Workout Sessions"
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
     status = models.TextChoices(
