@@ -1,0 +1,38 @@
+@api_url=http://127.0.0.1:8000/api/v1
+
+## Exercises
+
+### Get all exercises
+GET {{api_url}}/exercise
+
+### Get exercise by ID
+GET {{api_url}}/exercises/c85d836a-071d-4995-a343-350380126047
+
+
+
+### Create new exercise
+POST {{api_url}}/exercise
+Content-Type: application/json
+
+{
+    "name": "Push-ups",
+    "number_of_repetitions": 4,
+    "number_of_sets": 2,
+    "user":"0dc69d77-304b-4a8b-af46-fbeea8bc80d2",
+    "weight":20
+}
+
+### Update exercise
+PUT {{api_url}}/exercise/f7f4abaf-908b-436f-9271-6b102120b916/
+Content-Type: application/json
+
+{
+    "name": "Push-ups",
+    "number_of_repetitions": 4,
+    "number_of_sets": 2,
+    "user":"0dc69d77-304b-4a8b-af46-fbeea8bc80d2",
+    "weight":20
+}
+
+### Delete exercise
+DELETE {{api_url}}/exercise/f7f4abaf-908b-436f-9271-6b102120b916/
