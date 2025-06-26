@@ -6,13 +6,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
+
+from app.utils.views.auth import AuthenticatedAPIView
 
 from .models import Workout
 from .serializers import WorkoutSerializer
 
 
-class WorkoutView(APIView):
+class WorkoutView(AuthenticatedAPIView):
     serializer_class = WorkoutSerializer
 
     def get_queryset(self) -> BaseManager[Workout]:

@@ -7,11 +7,13 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from app.utils.views.auth import AuthenticatedAPIView
+
 from .models import Exercise, ExerciseCategory
 from .serializers import ExerciseCategorySerializer, ExerciseSerializer
 
 
-class ExerciseViewSet(APIView):
+class ExerciseViewSet(AuthenticatedAPIView):
     serializer_class = ExerciseSerializer
 
     def get_queryset(self) -> BaseManager[Exercise]:
