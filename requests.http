@@ -1,9 +1,12 @@
 @api_url=http://127.0.0.1:8000/api/v1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwOTA3MDQxLCJpYXQiOjE3NTA5MDM0NDEsImp0aSI6ImM4ZDc0ZDZjNjkzMTQyMWVhNjM5NTNmODhiOTBlMDBmIiwidXNlcl9pZCI6ImZiMmFjYmQ2LTJmZWQtNDMzYS1iOTMwLTIwZTBhYjQ3MmNjZCJ9.sfu6bs5IbW2qj9RX-Tuonhos1hCajzEJIyT8OHIR9Gc
 
 ## Exercises
 
 ### Get all exercises
 GET {{api_url}}/exercise
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
 ### Get exercise by ID
 GET {{api_url}}/exercises/c85d836a-071d-4995-a343-350380126047
@@ -13,6 +16,7 @@ GET {{api_url}}/exercises/c85d836a-071d-4995-a343-350380126047
 ### Create new exercise
 POST {{api_url}}/exercise
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "name": "Push-ups",
@@ -36,3 +40,29 @@ Content-Type: application/json
 
 ### Delete exercise
 DELETE {{api_url}}/exercise/f7f4abaf-908b-436f-9271-6b102120b916/
+
+
+## Accounts
+
+### Token Generate
+POST {{api_url}}/auth/token/
+Content-Type: application/json
+
+{
+    "username": "johndoe",
+    "password": "123456"
+}
+
+### Get user by ID
+GET {{api_url}}/accounts/fb2acbd6-2fed-433a-b930-20e0ab472ccd/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Delete user by ID
+DELETE  {{api_url}}/accounts/fb2acbd6-2fed-433a-b930-20e0ab472ccd/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+
+
