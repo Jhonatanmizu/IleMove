@@ -15,6 +15,21 @@ class Address(models.Model):
     state = models.CharField(max_length=200, null=False, blank=False)
     country = models.CharField(max_length=200, null=False, blank=False)
     zip_code = models.CharField(max_length=200, null=False, blank=False)
+    user = models.ForeignKey(
+        "CustomUser", on_delete=models.CASCADE, null=True, blank=True
+    )
+
+
+class Profile(models.Model):
+    class Meta:
+        verbose_name = "Profile"
+        verbose_name_plural = "Profiles"
+
+    user = models.OneToOneField("CustomUser", on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    birthdate = models.DateField(null=True, blank=True)
+    identity_number = models.CharField(max_length=20, null=True, blank=True)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
 
 
 class CustomUser(AbstractUser):
@@ -23,9 +38,3 @@ class CustomUser(AbstractUser):
         verbose_name_plural = "Users"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    birthdate = models.DateField(null=True, blank=True)
-    identity_number = models.CharField(max_length=20, null=True, blank=True)
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
-    address = models.ForeignKey(
-        Address, on_delete=models.CASCADE, null=True, blank=True
-    )
